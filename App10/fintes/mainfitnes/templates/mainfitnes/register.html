@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BodyClub</title>
+    <link rel="stylesheet" href="{% static 'mainfitnes/css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<div class="reg-vertical-form">
+    <h1 class="reg-vertical-form__title">Регистрация</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="reg-vertical-form__group">
+            <label for="username" class="reg-vertical-form__label">Имя пользователя</label>
+            <input type="text" id="username" name="username" class="reg-vertical-form__input" placeholder="Придумайте логин">
+            <span class="reg-vertical-form__hint">Не менее 5 символов</span>
+        </div>
+        
+        <div class="reg-vertical-form__group">
+            <label for="email" class="reg-vertical-form__label">Email</label>
+            <input type="email" id="email" name="email" class="reg-vertical-form__input" placeholder="Ваш email">
+        </div>
+        
+        <div class="reg-vertical-form__group">
+            <label for="password1" class="reg-vertical-form__label">Пароль</label>
+            <input type="password" id="password1" name="password1" class="reg-vertical-form__input" placeholder="Придумайте пароль">
+            <span class="reg-vertical-form__hint">Не менее 8 символов</span>
+        </div>
+        
+        <div class="reg-vertical-form__group">
+            <label for="password2" class="reg-vertical-form__label">Подтверждение пароля</label>
+            <input type="password" id="password2" name="password2" class="reg-vertical-form__input" placeholder="Повторите пароль">
+        </div>
+        
+        <div class="reg-vertical-form__group">
+            <label for="phone" class="reg-vertical-form__label">Телефон</label>
+            <input type="tel" id="phone" name="phone" class="reg-vertical-form__input" placeholder="+7 (999) 123-45-67">
+        </div>
+        
+        <button type="submit" class="reg-vertical-form__button">Зарегистрироваться</button>
+        
+        <div class="reg-vertical-form__footer">
+            Уже есть аккаунт? <a href="{% url 'login' %}" class="reg-vertical-form__link">Войти</a>
+        </div>
+    </form>
+</div>

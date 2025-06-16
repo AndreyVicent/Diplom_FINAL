@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BodyClub - Контакты</title>
+    <link rel="stylesheet" href="{% static 'mainfitnes/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'mainfitnes/css/contacts.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header_logo">
+                <a href="{% url 'index' %}" class="header_logo_h1">BodyClub</a>
+            </div>
+                <nav class="navigation">
+                    <a href="{% url 'index2' %}" class="navigation_a"> Абонементы</a>
+                    <a href="{% url 'index3' %}" class="navigation_a"> Персональные тренировки </a>
+                    <a href="{% url 'index4' %}" class="navigation_a"> Расписание </a>
+                    <a href="{% url 'index5' %}" class="navigation_a"> Контакты </a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'profile' %}" class="navigation_a">Личный кабинет</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="navigation_a">Личный кабинет</a>
+                    {% endif %}
+                </nav>
+            <div class="svaz">
+                <button class="callback-btn">Обратный звонок</button>
+            </div>
+            <button class="hamburger" id="hamburger">&#9776;</button>
+        </header>
+
+        <div class="crumbl_block">
+            <p class="crumbs_text">Главная страница / Контакты</p>
+        </div>
+
+        <section class="contacts-section">
+            <h1 class="contacts-title">Контакты</h1>
+            
+            <div class="contacts-container">
+                <div class="contact-info">
+                    <h2 class="contact-subtitle">Наши филиалы</h2>
+                    
+                    <div class="contact-card">
+                        <h3 class="contact-card-title">Дворцовая 4А</h3>
+                        <div class="contact-card-content">
+                            <p><strong>Адрес:</strong> г. Ульяновск, ул. Дворцовая, 4А</p>
+                            <p><strong>Телефон:</strong> +7 (999) 999-99-99</p>
+                            <p><strong>Часы работы:</strong> Круглосуточно </p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <h3 class="contact-card-title">ул. Репина 4</h3>
+                        <div class="contact-card-content">
+                            <p><strong>Адрес:</strong> г. Ульяновск, ул. Репина, 4</p>
+                            <p><strong>Телефон:</strong> +7 (999) 999-99-99</p>
+                            <p><strong>Часы работы:</strong> Круглосуточно </p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <h3 class="contact-card-title">пр. Ленинского Комсомола 34</h3>
+                        <div class="contact-card-content">
+                            <p><strong>Адрес:</strong> г. Ульяновск, пр. Ленинского Комсомола, 34</p>
+                            <p><strong>Телефон:</strong> +7 (999) 999-99-99</p>
+                            <p><strong>Часы работы:</strong> Круглосуточно </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form-section">
+                    <h2 class="contact-subtitle">Оставьте отзыв</h2>
+                    <form method="POST" class="review-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_name">Ваше имя:</label>
+                            {{ form.name }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_content">Ваш отзыв:</label>
+                            {{ form.content }}
+                        </div>
+                        <button type="submit" class="submit-btn">Отправить отзыв</button>
+                    </form>
+                    
+                    <div class="reviews-section">
+                        <h2 class="reviews-title">Отзывы наших клиентов</h2>
+                        <div class="reviews-list">
+                            {% for review in reviews %}
+                            <div class="review-item">
+                                <div class="review-header">
+                                    <h3 class="review-author">{{ review.name }}</h3>
+                                    <span class="review-date">{{ review.created_at|date:"d.m.Y" }}</span>
+                                </div>
+                                <p class="review-text">{{ review.content }}</p>
+                            </div>
+                            {% empty %}
+                            <p class="no-reviews">Пока нет отзывов. Будьте первым!</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-main">
+                <div class="foter-main_ogr">
+                    <div class="footer-left">
+                        <h2 class="footer-logo">BodyClub</h2>
+                        <ul class="footer-links">
+                            <li> <a href="{% url 'index2' %}"> Абонементы </a> </li>
+                            <li> <a href="{% url 'index3' %}"> Персональные тренировки </a> </li>
+                            <li> <a href="{% url 'index4' %}"> Расписание </a> </li>
+                            <li> <a href="{% url 'index5' %}"> Контакты </a> </li>
+                        </ul>
+                        <button class="callback-btn">Обратный звонок</button>
+                    </div>
+                    <div class="footer-right">
+                        <a href="tel:+79999999999">☎ +7 (999) 999-99-99</a>
+                        <a href="https://bodyclub.ru" target="_blank">🌐 bodyclub.ru</a>
+                        <iframe
+                            src="https://yandex.ru/map-widget/v1/?um=constructor%3Aexamplemapid&amp;source=constructor"
+                            class="footer-map"
+                            frameborder="0"
+                            allowfullscreen
+                        ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-logo">BodyClub</div>
+                <ul class="footer-bottom-links">
+                    <li> <a href="{% url 'index2' %}" class="navigation_a"> Абонементы </a> </li>
+                    <li> <a href="{% url 'index3' %}" class="navigation_a"> Персональные тренировки </a> </li>
+                    <li> <a href="{% url 'index4' %}" class="navigation_a"> Расписание  </a> </li>
+                    <li> <a href="{% url 'index5' %}" class="navigation_a"> Контакты </a> </li>
+                </ul>
+            </div>
+        </footer>
+
+    </div>
+
+
+<div id="callback-modal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h3>Заказать обратный звонок</h3>
+        <form id="callback-form" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="callback-name">Ваше имя:</label>
+                <input type="text" id="callback-name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="callback-phone">Телефон:</label>
+                <input type="tel" id="callback-phone" name="phone" required>
+            </div>
+            <button type="submit" class="submit-btn">Перезвоните мне</button>
+        </form>
+        <div id="callback-success" style="display: none;">
+            <p>Спасибо! Мы свяжемся с вами в ближайшее время.</p>
+        </div>
+    </div>
+</div>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const navigation = document.querySelector('.navigation');
+            
+        hamburger.addEventListener('click', () => {
+            navigation.classList.toggle('show');
+        });
+
+
+
+document.querySelectorAll('.callback-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.getElementById('callback-modal').style.display = 'block';
+    });
+});
+
+
+document.getElementById('callback-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    fetch('/callback/', {
+        method: 'POST',
+        body: new FormData(this),
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('callback-form').style.display = 'none';
+            document.getElementById('callback-success').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('callback-modal').style.display = 'none';
+                document.getElementById('callback-form').style.display = 'block';
+                document.getElementById('callback-success').style.display = 'none';
+            }, 2000);
+        } else {
+            alert('Ошибка: ' + (data.errors || 'Проверьте правильность данных'));
+        }
+    });
+});
+
+
+document.querySelectorAll('.modal-close').forEach(closeBtn => {
+    closeBtn.addEventListener('click', function() {
+        this.closest('.modal').style.display = 'none';
+    });
+});
+
+
+document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.style.display = 'none';
+        }
+    });
+});
+    </script>
+</body>
+</html>

@@ -1,0 +1,525 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BodyClub - Тренировки</title>
+    <link rel="stylesheet" href="{% static 'mainfitnes/css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header_logo">
+                <a href="{% url 'index' %}" class="header_logo_h1">BodyClub</a>
+            </div>
+                <nav class="navigation">
+                    <a href="{% url 'index2' %}" class="navigation_a"> Абонементы</a>
+                    <a href="{% url 'index3' %}" class="navigation_a"> Персональные тренировки </a>
+                    <a href="{% url 'index4' %}" class="navigation_a"> Расписание </a>
+                    <a href="{% url 'index5' %}" class="navigation_a"> Контакты </a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'profile' %}" class="navigation_a">Личный кабинет</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="navigation_a">Личный кабинет</a>
+                    {% endif %}
+                </nav>
+            <div class="svaz">
+                <button class="callback-btn">Обратный звонок</button>
+            </div>
+            <button class="hamburger" id="hamburger">&#9776;</button>
+        </header>
+
+        <div class="crumbl_block">
+            <p class="crumbs_text">Главная страница / Расписание </p>
+        </div>
+
+        <div class="workouts-section">
+            <h2>Групповые тренировки</h2>
+            
+            <div class="workouts-filters">
+                <button class="filter-btn active" data-branch="all">Все филиалы</button>
+                <button class="filter-btn" data-branch="dvor">Дворцовая 4А</button>
+                <button class="filter-btn" data-branch="repina">ул. Репина 4</button>
+                <button class="filter-btn" data-branch="lenina">пр. Ленинского Комсомола 34</button>
+            </div>
+            
+            <div id="workouts-container" class="workouts-grid">
+
+            </div>
+        </div>
+
+            <div class = "container2">
+        <section class="slider">
+            <div class="slider_header">
+                <h2 class="slider_title">Спорт-клуб BodyClub</h2>
+                <div class="slider_controls">
+                    <button class="slider_btn prev">&#10094;</button>
+                    <button class="slider_btn next">&#10095;</button>
+                </div>
+            </div>
+
+            <div class="slider_container">
+                <div class="slider_track">
+                <img src="{% static 'mainfitnes/img/club1.png' %}" alt="Зал 1" class="slider_image">
+                <img src="{% static 'mainfitnes/img/club2.png' %}" alt="Зал 2" class="slider_image">
+                <img src="{% static 'mainfitnes/img/club3.png' %}" alt="Зал 3" class="slider_image">
+                <img src="{% static 'mainfitnes/img/club4.png' %}" alt="Зал 4" class="slider_image">
+                <img src="{% static 'mainfitnes/img/club5.png' %}" alt="Зал 5" class="slider_image">
+                <img src="{% static 'mainfitnes/img/club6.png' %}" alt="Зал 6" class="slider_image">
+                </div>
+            </div>
+
+            <div class="slider_dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </section>
+
+        <section class="centers">
+            <div class="centers_header">
+                <h2 class="centers_title">Фитнес-центры</h2>
+            </div>
+            <div class="centers_cards">
+                <div class="center_card">
+                    <img src="{% static 'mainfitnes/img/club1.png' %}" alt="Центр 1" class="center_image">
+                    <div class="center_label">Фитнес клуб на Дворцовой 4А</div>
+                </div>
+                <div class="center_card">
+                    <img src="{% static 'mainfitnes/img/club2.png' %}" alt="Центр 2" class="center_image">
+                    <div class="center_label">Фитнес клуб на ул. Репина 4</div>
+                </div>
+                <div class="center_card">
+                    <img src="{% static 'mainfitnes/img/club3.png' %}" alt="Центр 3" class="center_image">
+                    <div class="center_label">Фитнес клуб на пр. Ленинского Комсомола 34</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="trainers">
+            <div class="trainers_header">
+                <h2 class="trainers_title">Наши тренера BodyClub</h2>
+                <div class="trainers_controls">
+                    <button class="trainers_btn">&#10094;</button>
+                    <button class="trainers_btn">&#10095;</button>
+                </div>
+            </div>
+
+            <div class="fortrainer">
+                <div class="trainer_card">
+                    <img src="{% static 'mainfitnes/img/trainer1.png' %}" alt="Тренер BodyClub" class="trainer_image">
+                    <div class="trainer_name">Аннастасия Громких</div>
+                    <div class="trainer_role">Персональный тренер</div>
+                    <div class="trainer_description">
+                        Дворцовая, 4А<br>
+                        Диплом ассоциации профессионалов фитнеса.<br>
+                        Сертифицированный инструктор: аэробика, функциональный, силовой тренинг, stretching, детский фитнес.<br>
+                        Помогу добиться желаемого результата, улучшить состояние организма, растянуть ваши мышцы.<br>
+                        <strong>Опыт работы: 5 лет</strong>
+                    </div>
+                </div>
+
+            <div class="trainer_card">
+                <img src="{% static 'mainfitnes/img/trainer2.png' %}" alt="Тренер BodyClub" class="trainer_image">
+                <div class="trainer_name">Андрей Кузнецов</div>
+                <div class="trainer_role">Персональный тренер</div>
+                <div class="trainer_description">
+                    Дворцовая, 4А<br>
+                    Диплом ассоциации профессионалов фитнеса.<br>
+                    Сертифицированный инструктор: силовой тренинг, функциональный тренинг, снижение веса, набор мышечной массы, коррекция фигуры.<br>
+                    Более 10 лет опыта силового тренинга, помогу набрать мышечную массу, улучшить состояние организма.<br>
+                    <strong>Опыт работы: 12 лет</strong>
+                </div>
+            </div>
+
+            <div class="trainer_card">
+                <img src="{% static 'mainfitnes/img/trainer3.png' %}" alt="Тренер BodyClub" class="trainer_image">
+                <div class="trainer_name">Екатерина Емельянова</div>
+                <div class="trainer_role">Мастер тренер</div>
+                <div class="trainer_description">
+                    Репина, 4<br>
+                    Диплом ассоциации профессионалов фитнеса.<br>
+                    Сертифицированный инструктор: набор силы, улучшение выносливости, набор мышечной массы, силовой тренинг.<br>
+                    Более 5 лет опыта силового тренинга, помогу набрать мышечную массу, добиться желаемого результата.<br>
+                    <strong>Опыт работы: 7 лет</strong>
+                </div>
+            </div>
+
+            <div class="trainer_card">
+                <img src="{% static 'mainfitnes/img/trainer5.png' %}" alt="Тренер BodyClub" class="trainer_image">
+                <div class="trainer_name">Кирилл Добрин</div>
+                <div class="trainer_role">Мастер тренер</div>
+                <div class="trainer_description">
+                    ул. Ленинского Комсомола, 34 <br>
+                    Диплом ассоциации профессионалов фитнеса.<br>
+                    Сертифицированный инструктор: набор силы, улучшение выносливости, набор мышечной массы, снижение веса.<br>
+                    Помощь в корректировке фигуры, набор мышечной массы, снижение веса, составление индивидуальных программ питания, функциональный тренинг.<br>
+                    <strong>Опыт работы: 15 лет</strong>
+                </div>
+            </div>
+
+            <div class="trainer_card">
+                <img src="{% static 'mainfitnes/img/trainer4.png' %}" alt="Тренер BodyClub" class="trainer_image">
+                <div class="trainer_name">Анастасия Шулепова</div>
+                <div class="trainer_role">Персональный тренер</div>
+                <div class="trainer_description">
+                    ул. Ленинского Комсомола, 34<br>
+                    Физкультурное педагогическое образование<br>
+                    Сертифицированный инструктор: набор силы, улучшение выносливости, лечебно-физическая культура, восстановление.<br>
+                    Помощь в воссстановлении после тяжелого этапа травм, развитие выносливости, лечебная гимнастика. Индивидуальный подход к каждого клиенту.<br>
+                    <strong>Опыт работы: 3 года </strong>
+                </div>
+            </div>
+        </section>
+    </div>
+
+        <footer class="footer">
+            <div class="footer-main">
+                <div class="foter-main_ogr">
+                    <div class="footer-left">
+                        <h2 class="footer-logo">BodyClub</h2>
+                        <ul class="footer-links">
+                            <li> <a href="{% url 'index2' %}"> Абонементы </a> </li>
+                            <li> <a href="{% url 'index3' %}"> Персональные тренировки </a> </li>
+                            <li> <a href="{% url 'index4' %}"> Расписание </a> </li>
+                            <li> <a href="{% url 'index5' %}"> Контакты </a> </li>
+                        </ul>
+                        <button class="callback-btn">Обратный звонок</button>
+                    </div>
+                    <div class="footer-right">
+                        <a href="tel:+79999999999">☎ +7 (999) 999-99-99</a>
+                        <a href="https://bodyclub.ru" target="_blank">🌐 bodyclub.ru</a>
+                        <iframe
+                            src="https://yandex.ru/map-widget/v1/?um=constructor%3Aexamplemapid&amp;source=constructor"
+                            class="footer-map"
+                            frameborder="0"
+                            allowfullscreen
+                        ></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-logo">BodyClub</div>
+                <ul class="footer-bottom-links">
+                    <li> <a href="{% url 'index2' %}" class="navigation_a"> Абонементы </a> </li>
+                    <li> <a href="{% url 'index3' %}" class="navigation_a"> Персональные тренировки </a> </li>
+                    <li> <a href="{% url 'index4' %}" class="navigation_a"> Расписание  </a> </li>
+                    <li> <a href="{% url 'index5' %}" class="navigation_a"> Контакты </a> </li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+
+
+<div id="signup-modal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h3>Записаться на тренировку</h3>
+        <form id="signup-form" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="training_id" id="modal-training-id">
+            <input type="hidden" name="training_type" id="modal-training-type">
+            
+            <div class="form-group">
+                <label for="name">Ваше имя:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Телефон:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email (необязательно):</label>
+                <input type="email" id="email" name="email">
+            </div>
+            
+            <button type="submit" class="submit-btn">Отправить</button>
+        </form>
+        <div id="signup-success" style="display: none;">
+            <p>Спасибо! Ваша заявка принята. Мы свяжемся с вами в ближайшее время.</p>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="callback-modal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h3>Заказать обратный звонок</h3>
+        <form id="callback-form" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="callback-name">Ваше имя:</label>
+                <input type="text" id="callback-name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="callback-phone">Телефон:</label>
+                <input type="tel" id="callback-phone" name="phone" required>
+            </div>
+            <button type="submit" class="submit-btn">Перезвоните мне</button>
+        </form>
+        <div id="callback-success" style="display: none;">
+            <p>Спасибо! Мы свяжемся с вами в ближайшее время.</p>
+        </div>
+    </div>
+</div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('workouts-container');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        
+
+        function loadWorkouts(branch = 'all') {
+            fetch('/api/workouts/')
+                .then(response => response.json())
+                .then(data => {
+                    container.innerHTML = '';
+                    
+                    if (branch !== 'all') {
+                        data = data.filter(item => item.branch === branch);
+                    }
+                    
+                    if (data.length === 0) {
+                        container.innerHTML = '<p class="no-data">Нет доступных тренировок в выбранном филиале</p>';
+                        return;
+                    }
+                    
+                    data.forEach(item => {
+                        const card = document.createElement('div');
+                        card.className = 'workout-card';
+                        card.innerHTML = `
+                            <h3 class="workout-title">${item.title}</h3>
+                            <div class="workout-branch">${getBranchName(item.branch)}</div>
+                            <div class="workout-trainer">Тренер: ${item.trainer}</div>
+                            <p class="workout-description">${item.description}</p>
+                            <div class="workout-schedule">
+                                <span class="workout-time">${item.time}</span>
+                                <span class="workout-days">${item.days}</span>
+                            </div>
+                            <button class="signup-btn" data-id="${item.id}">Записаться</button>
+                        `;
+                        container.appendChild(card);
+                    });
+                });
+        }
+        
+
+        function getBranchName(branchCode) {
+            const branches = {
+                'dvor': 'Дворцовая 4А',
+                'repina': 'ул. Репина 4',
+                'lenina': 'пр. Ленинского Комсомола 34'
+            };
+            return branches[branchCode] || branchCode;
+        }
+        
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                loadWorkouts(this.dataset.branch);
+            });
+        });
+        
+
+        loadWorkouts();
+    });
+
+    const hamburger = document.getElementById('hamburger');
+    const navigation = document.querySelector('.navigation');
+        
+        hamburger.addEventListener('click', () => {
+            navigation.classList.toggle('show');
+        });
+
+   
+
+    const track = document.querySelector('.slider_track');
+    const dots = document.querySelectorAll('.dot');
+    const prevBtn = document.querySelector('.slider_btn.prev');
+    const nextBtn = document.querySelector('.slider_btn.next');
+
+    const cardsPerView = 3;
+    const totalCards = document.querySelectorAll('.slider_image').length;
+    const maxIndex = Math.ceil(totalCards / cardsPerView) - 1;
+    let index = 0;
+
+    function updateSlider() {
+        const offset = index * -(320 * cardsPerView); 
+        track.style.transform = `translateX(${offset}px)`;
+
+        dots.forEach(dot => dot.classList.remove('active'));
+        if (dots[index]) dots[index].classList.add('active');
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (index < maxIndex) {
+            index++;
+            updateSlider();
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (index > 0) {
+            index--;
+            updateSlider();
+        }
+    });
+
+    dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+            index = i;
+            updateSlider();
+        });
+    });
+
+
+
+
+    const modal = document.getElementById('signup-modal');
+    const modalClose = document.querySelector('.modal-close');
+    const signupForm = document.getElementById('signup-form');
+    const signupSuccess = document.getElementById('signup-success');
+
+
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('book-btn')) {
+
+        const isAuthenticated = {% if user.is_authenticated %}true{% else %}false{% endif %};
+        
+        if (!isAuthenticated) {
+
+            window.location.href = "{% url 'login' %}?redirect=" + encodeURIComponent(window.location.pathname);
+            return;
+        }
+        
+        document.getElementById('modal-training-id').value = e.target.dataset.id;
+        document.getElementById('modal-training-type').value = 'personal';
+        modal.style.display = 'block';
+    }
+    
+    if (e.target.classList.contains('signup-btn')) {
+
+        const isAuthenticated = {% if user.is_authenticated %}true{% else %}false{% endif %};
+        
+        if (!isAuthenticated) {
+
+            window.location.href = "{% url 'login' %}?redirect=" + encodeURIComponent(window.location.pathname);
+            return;
+        }
+        
+        document.getElementById('modal-training-id').value = e.target.dataset.id;
+        document.getElementById('modal-training-type').value = 'group';
+        modal.style.display = 'block';
+    }
+});
+
+
+
+modalClose.onclick = function() {
+    modal.style.display = 'none';
+    signupForm.style.display = 'block';
+    signupSuccess.style.display = 'none';
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = 'none';
+        signupForm.style.display = 'block';
+        signupSuccess.style.display = 'none';
+    }
+}
+
+
+signupForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    fetch('/sign-up/', {
+        method: 'POST',
+        body: new FormData(this),
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            signupForm.style.display = 'none';
+            signupSuccess.style.display = 'block';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                signupForm.style.display = 'block';
+                signupSuccess.style.display = 'none';
+            }, 2000);
+        } else {
+            alert('Ошибка: ' + (data.errors || 'Пожалуйста, заполните все поля правильно'));
+        }
+    })
+    .catch(error => {
+        alert('Произошла ошибка при отправке формы');
+    });
+});
+
+
+
+
+document.querySelectorAll('.callback-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.getElementById('callback-modal').style.display = 'block';
+    });
+});
+
+
+document.getElementById('callback-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    fetch('/callback/', {
+        method: 'POST',
+        body: new FormData(this),
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('callback-form').style.display = 'none';
+            document.getElementById('callback-success').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('callback-modal').style.display = 'none';
+                document.getElementById('callback-form').style.display = 'block';
+                document.getElementById('callback-success').style.display = 'none';
+            }, 2000);
+        } else {
+            alert('Ошибка: ' + (data.errors || 'Проверьте правильность данных'));
+        }
+    });
+});
+
+
+document.querySelectorAll('.modal-close').forEach(closeBtn => {
+    closeBtn.addEventListener('click', function() {
+        this.closest('.modal').style.display = 'none';
+    });
+});
+
+
+document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.style.display = 'none';
+        }
+    });
+});
+</script>
+</body>
+</html>

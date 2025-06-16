@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BodyClub</title>
+    <link rel="stylesheet" href="{% static 'mainfitnes/css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<div class="auth-form">
+    <h2 class="auth-form__title">Вход</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="auth-form__group">
+            <label for="username" class="auth-form__label">Имя пользователя</label>
+            <input type="text" id="username" name="username" class="auth-form__input" placeholder="Введите имя пользователя">
+        </div>
+        <div class="auth-form__group">
+            <label for="password" class="auth-form__label">Пароль</label>
+            <input type="password" id="password" name="password" class="auth-form__input" placeholder="Введите пароль">
+        </div>
+        <button type="submit" class="auth-form__button">Войти</button>
+        <div class="auth-form__footer">
+            Нет аккаунта? <a href="{% url 'register' %}" class="auth-form__link">Зарегистрироваться</a>
+        </div>
+    </form>
+</div>

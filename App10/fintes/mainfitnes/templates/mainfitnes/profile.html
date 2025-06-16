@@ -1,0 +1,443 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BodyClub - Личный кабинет</title>
+    <link rel="stylesheet" href="{% static 'mainfitnes/css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header_logo">
+                <a href="{% url 'index' %}" class="header_logo_h1">BodyClub</a>
+            </div>
+            <nav class="navigation">
+                <a href="{% url 'index2' %}" class="navigation_a">Абонементы</a>
+                <a href="{% url 'index3' %}" class="navigation_a">Персональные тренировки</a>
+                <a href="{% url 'index4' %}" class="navigation_a">Расписание</a>
+                <a href="{% url 'index5' %}" class="navigation_a">Контакты</a>
+                <a href="{% url 'profile' %}" class="navigation_a active">Личный кабинет</a>
+            </nav>
+            <div class="svaz">
+                <button class="callback-btn">Обратный звонок</button>
+            </div>
+            <button class="hamburger" id="hamburger">&#9776;</button>
+        </header>
+
+        <div class="profile-wrapper">
+            <aside class="profile-sidebar">
+                <div class="profile-user">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h3>{{ user.username }}</h3>
+                        <p>Участник с {{ user.date_joined|date:"d.m.Y" }}</p>
+                    </div>
+                </div>
+                
+                <nav class="profile-nav">
+                    <ul>
+                        <li class="active"><a href="#profile-info"><i class="fas fa-user"></i> Профиль</a></li>
+                        <li><a href="#subscriptions"><i class="fas fa-id-card"></i> Абонементы</a></li>
+                        <li><a href="#personal-trainings"><i class="fas fa-dumbbell"></i> Персональные тренировки</a></li>
+                        <li><a href="#group-workouts"><i class="fas fa-users"></i> Групповые занятия</a></li>
+                        <li><a href="#settings"><i class="fas fa-cog"></i> Настройки</a></li>
+                        <li>
+                            <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i class="fas fa-sign-out-alt"></i> Выйти
+                            </a>
+                            <form id="logout-form" action="{% url 'logout' %}" method="POST" style="display: none;">
+                                {% csrf_token %}
+                            </form>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+
+            <main class="profile-content">
+                <section id="profile-info" class="profile-section active">
+                    <div class="profile-header">
+                        <h2>Мой профиль</h2>
+                        <button class="edit-btn"><i class="fas fa-edit"></i> Редактировать</button>
+                    </div>
+                    
+                    <div class="profile-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Имя пользователя:</span>
+                            <span class="detail-value">{{ user.username }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">{{ user.email }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Телефон:</span>
+                            <span class="detail-value">{{ user.userprofile.phone|default:"Не указан" }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Дата рождения:</span>
+                            <span class="detail-value">{{ user.userprofile.birth_date|date:"d.m.Y"|default:"Не указана" }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Адрес:</span>
+                            <span class="detail-value">{{ user.userprofile.address|default:"Не указан" }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>12</h3>
+                                <p>Посещений в этом месяце</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>24</h3>
+                                <p>Тренировок за год</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>3</h3>
+                                <p>Достижения</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <section id="subscriptions" class="profile-section">
+                    <div class="profile-header">
+                        <h2>Мои абонементы</h2>
+                    </div>
+                    
+                    {% if subscriptions %}
+                    <div class="subscriptions-list">
+                        {% for sub in subscriptions %}
+                        <div class="subscription-card {% if sub.is_active %}active{% else %}inactive{% endif %}">
+                            <div class="subscription-header">
+                                <h3>{{ sub.title }}</h3>
+                                <span class="subscription-status">
+                                    {% if sub.is_active %}
+                                    <i class="fas fa-check-circle"></i> Активен
+                                    {% else %}
+                                    <i class="fas fa-times-circle"></i> Не активен
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="subscription-details">
+                                <div class="detail">
+                                    <span class="detail-label">Филиал:</span>
+                                    <span class="detail-value">{{ sub.get_branch_display }}</span>
+                                </div>
+                                <div class="detail">
+                                    <span class="detail-label">Срок действия:</span>
+                                    <span class="detail-value">{{ sub.duration }}</span>
+                                </div>
+                                <div class="detail">
+                                    <span class="detail-label">Осталось посещений:</span>
+                                    <span class="detail-value">{{ sub.visits_left }} из {{ sub.total_visits }}</span>
+                                </div>
+                                <div class="detail">
+                                    <span class="detail-label">Дата окончания:</span>
+                                    <span class="detail-value">{{ sub.end_date|date:"d.m.Y" }}</span>
+                                </div>
+                            </div>
+                            <div class="subscription-features">
+                                <h4>Особенности:</h4>
+                                <p>{{ sub.features }}</p>
+                            </div>
+                            {% if sub.is_active %}
+                            <button class="subscription-action">Продлить абонемент</button>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-id-card"></i>
+                        <h3>У вас нет активных абонементов</h3>
+                        <p>Приобретите абонемент, чтобы начать тренировки</p>
+                        <a href="{% url 'index2' %}" class="btn-primary">Выбрать абонемент</a>
+                    </div>
+                    {% endif %}
+                </section>
+
+
+                <section id="personal-trainings" class="profile-section">
+                    <div class="profile-header">
+                        <h2>Мои персональные тренировки</h2>
+                        <button class="btn-primary" id="book-training-btn">
+                            <i class="fas fa-plus"></i> Записаться на ПТ
+                        </button>
+                    </div>
+                    
+                    {% if personal_trainings %}
+                    <div class="trainings-list">
+                        {% for training in personal_trainings %}
+                        <div class="training-card">
+                            <div class="training-header">
+                                <h3>{{ training.trainer_name }}</h3>
+                                <span class="training-type {{ training.trainer_type }}">
+                                    {% if training.trainer_type == 'master' %}
+                                    <i class="fas fa-star"></i> Мастер-тренер
+                                    {% else %}
+                                    <i class="fas fa-user-tie"></i> Персональный тренер
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="training-details">
+                                <div class="detail">
+                                    <span class="detail-label">Дата:</span>
+                                    <span class="detail-value">{{ training.date|date:"d.m.Y" }}</span>
+                                </div>
+                                <div class="detail">
+                                    <span class="detail-label">Время:</span>
+                                    <span class="detail-value">{{ training.time }}</span>
+                                </div>
+                                <div class="detail">
+                                    <span class="detail-label">Филиал:</span>
+                                    <span class="detail-value">{{ training.branch }}</span>
+                                </div>
+                                <div class="detail">
+                                    <span class="detail-label">Осталось:</span>
+                                    <span class="detail-value">{{ training.sessions_left }} из {{ training.total_sessions }} сессий</span>
+                                </div>
+                            </div>
+                            <div class="training-actions">
+                                <button class="btn-outline cancel-btn" data-id="{{ training.id }}">
+                                    <i class="fas fa-times"></i> Отменить
+                                </button>
+                                <button class="btn-primary reschedule-btn" data-id="{{ training.id }}">
+                                    <i class="fas fa-calendar-alt"></i> Перенести
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-dumbbell"></i>
+                        <h3>У вас нет запланированных персональных тренировок</h3>
+                        <p>Запишитесь на персональную тренировку с нашим тренером</p>
+                        <a href="{% url 'index3' %}" class="btn-primary">Записаться на ПТ</a>
+                    </div>
+                    {% endif %}
+                </section>
+
+
+                <section id="group-workouts" class="profile-section">
+                    <div class="profile-header">
+                        <h2>Мои групповые занятия</h2>
+                        <button class="btn-primary" id="book-workout-btn">
+                            <i class="fas fa-plus"></i> Записаться на занятие
+                        </button>
+                    </div>
+                    
+                    {% if group_workouts %}
+                    <div class="workouts-list">
+                        {% for workout in group_workouts %}
+                        <div class="workout-card">
+                            <div class="workout-header">
+                                <h3>{{ workout.title }}</h3>
+                                <span class="workout-status {% if workout.is_upcoming %}upcoming{% else %}completed{% endif %}">
+                                    {% if workout.is_upcoming %}
+                                    <i class="fas fa-clock"></i> Предстоящее
+                                    {% else %}
+                                    <i class="fas fa-check"></i> Завершено
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="workout-details">
+                                <div class="detail">
+                                    <span class="detail-label">Тренер:</span>
+                                    <span class="detail-value">{{ workout.trainer }}</span>
+                                </div>
+                                <div class="detail">
+                                    <span class="detail-label">Дата:</span>
+                                    <span class="detail-value">{{ workout.date|date:"d.m.Y" }}</span>
+                                </div>
+                                <div class="detail">
+                                    <span class="detail-label">Время:</span>
+                                    <span class="detail-value">{{ workout.time }}</span>
+                                </div>
+                                <div class="detail">
+                                    <span class="detail-label">Филиал:</span>
+                                    <span class="detail-value">{{ workout.branch }}</span>
+                                </div>
+                            </div>
+                            {% if workout.is_upcoming %}
+                            <div class="workout-actions">
+                                <button class="btn-outline cancel-btn" data-id="{{ workout.id }}">
+                                    <i class="fas fa-times"></i> Отменить
+                                </button>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <h3>У вас нет запланированных групповых занятий</h3>
+                        <p>Выберите групповое занятие из нашего расписания</p>
+                        <a href="{% url 'index4' %}" class="btn-primary">Посмотреть расписание</a>
+                    </div>
+                    {% endif %}
+                </section>
+
+
+                <section id="settings" class="profile-section">
+                    <div class="profile-header">
+                        <h2>Настройки профиля</h2>
+                    </div>
+                    
+                    <form class="settings-form">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" value="{{ user.email }}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Телефон</label>
+                            <input type="tel" id="phone" value="{{ user.userprofile.phone|default:'' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="birth_date">Дата рождения</label>
+                            <input type="date" id="birth_date" value="{{ user.userprofile.birth_date|date:'Y-m-d'|default:'' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Адрес</label>
+                            <input type="text" id="address" value="{{ user.userprofile.address|default:'' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="notifications">Уведомления</label>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" checked> Email-уведомления
+                                </label>
+                                <label>
+                                    <input type="checkbox" checked> SMS-уведомления
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Сохранить изменения</button>
+                    </form>
+                    
+                    <div class="danger-zone">
+                        <h3>Опасная зона</h3>
+                        <p>Эти действия нельзя отменить. Будьте осторожны.</p>
+                        <button class="btn-danger" id="change-password-btn">
+                            <i class="fas fa-key"></i> Сменить пароль
+                        </button>
+                        <button class="btn-danger" id="delete-account-btn">
+                            <i class="fas fa-trash-alt"></i> Удалить аккаунт
+                        </button>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <footer class="footer">
+
+        </footer>
+    </div>
+
+
+    <div id="edit-profile-modal" class="modal">
+
+    </div>
+
+    <div id="book-training-modal" class="modal">
+
+    </div>
+
+    <script>
+        document.querySelectorAll('.profile-nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                
+                document.querySelectorAll('.profile-nav li').forEach(item => {
+                    item.classList.remove('active');
+                });
+                document.querySelectorAll('.profile-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                
+                this.parentElement.classList.add('active');
+                
+               
+                const target = this.getAttribute('href');
+                document.querySelector(target).classList.add('active');
+            });
+        });
+
+        
+        flatpickr("#birth_date", {
+            dateFormat: "d.m.Y",
+            allowInput: true
+        });
+
+        
+        document.querySelector('.edit-btn').addEventListener('click', function() {
+            document.getElementById('edit-profile-modal').style.display = 'block';
+        });
+
+        
+        document.querySelectorAll('.cancel-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                if (confirm('Вы уверены, что хотите отменить запись?')) {
+                    
+                    fetch(`/cancel-booking/${id}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert('Ошибка: ' + data.error);
+                        }
+                    });
+                }
+            });
+        });
+
+        
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            modal.querySelector('.modal-close').addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

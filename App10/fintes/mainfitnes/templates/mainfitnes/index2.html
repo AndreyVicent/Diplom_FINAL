@@ -1,0 +1,572 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BodyClub</title>
+    <link rel="stylesheet" href="{% static 'mainfitnes/css/style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class = "container">
+        <header class="header">
+                <div class="header_logo">
+                    <a href="{% url 'index' %}" class="header_logo_h1"> BodyClub </a>
+                </div>
+                <nav class="navigation">
+                    <a href="{% url 'index2' %}" class="navigation_a"> Абонементы</a>
+                    <a href="{% url 'index3' %}" class="navigation_a"> Персональные тренировки </a>
+                    <a href="{% url 'index4' %}" class="navigation_a"> Расписание </a>
+                    <a href="{% url 'index5' %}" class="navigation_a"> Контакты </a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'profile' %}" class="navigation_a">Личный кабинет</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="navigation_a">Личный кабинет</a>
+                    {% endif %}
+                </nav>
+                <div class="svaz">
+                    <button class="callback-btn">Обратный звонок</button>
+                </div>
+                <button class="hamburger" id="hamburger">&#9776;</button>
+        </header>
+
+        <div class="crumbl_block">
+            <p class="crumbs_text">Главная страница / Абонементы </p>
+        </div>
+
+        <h2 class="promo_title">Акции на фитнес в Ульяновске</h2>
+
+        <div class="promos_container">
+            <h3 class="promo_subtitle">Акции</h3>
+            <p class="promo_date">Только до 31 августа</p>
+
+            <div class="promo_buttons">
+                <button class="promo_btn" data-branch="dvor">Дворцовая 4А</button>
+                <button class="promo_btn" data-branch="repina">ул. Репина 4</button>
+                <button class="promo_btn" data-branch="lenina">пр. Ленинского Комсомола 34</button>
+            </div>
+
+            <div id="subscriptions-container" class="subscriptions-grid">
+                
+            </div>
+
+            <div class="subscription-buttons">
+                {% if user.is_authenticated %}
+                    <button class="subscription-btn request-btn">Оставить заявку</button>
+                    <button class="subscription-btn online-btn">Оформить онлайн</button>
+                {% else %}
+                    <button class="subscription-btn request-btn">Оставить заявку</button>
+                    <button class="subscription-btn online-btn" onclick="redirectToLogin()">Оформить онлайн</button>
+                {% endif %}
+            </div>
+
+
+        <div id="request-modal" class="modal">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <h3>Оставить заявку на абонемент</h3>
+                <form id="request-form" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="request-name">Ваше имя:</label>
+                        <input type="text" id="request-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="request-phone">Телефон:</label>
+                        <input type="tel" id="request-phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="request-subscription">Выбранный абонемент:</label>
+                        <select id="request-subscription" name="subscription">
+
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-btn">Отправить заявку</button>
+                </form>
+                <div id="request-success" style="display: none;">
+                    <p>Спасибо! Ваша заявка принята. Мы свяжемся с вами в ближайшее время.</p>
+                </div>
+            </div>
+        </div>
+
+        <section class="slider">
+            <div class="slider_header">
+                <h2 class="slider_title">Спорт-клуб BodyClub</h2>
+                <div class="slider_controls">
+                    <button class="slider_btn prev">&#10094;</button>
+                    <button class="slider_btn next">&#10095;</button>
+                </div>
+            </div>
+
+            <div class="slider_container">
+                <div class="slider_track">
+                <img src="{% static 'mainfitnes/img/club1.png' %}" alt="Зал 1" class="slider_image">
+                <img src="{% static 'mainfitnes/img/club2.png' %}" alt="Зал 2" class="slider_image">
+                <img src="{% static 'mainfitnes/img/club3.png' %}" alt="Зал 3" class="slider_image">
+                <img src="{% static 'mainfitnes/img/club4.png' %}" alt="Зал 4" class="slider_image">
+                <img src="{% static 'mainfitnes/img/club5.png' %}" alt="Зал 5" class="slider_image">
+                <img src="{% static 'mainfitnes/img/club6.png' %}" alt="Зал 6" class="slider_image">
+                </div>
+            </div>
+
+            <div class="slider_dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </section>
+
+        <section class="centers">
+            <div class="centers_header">
+                <h2 class="centers_title">Фитнес-центры</h2>
+            </div>
+            <div class="centers_cards">
+                <div class="center_card">
+                    <img src="{% static 'mainfitnes/img/club1.png' %}" alt="Центр 1" class="center_image">
+                    <div class="center_label">Фитнес клуб на Дворцовой 4А</div>
+                </div>
+                <div class="center_card">
+                    <img src="{% static 'mainfitnes/img/club2.png' %}" alt="Центр 2" class="center_image">
+                    <div class="center_label">Фитнес клуб на ул. Репина 4</div>
+                </div>
+                <div class="center_card">
+                    <img src="{% static 'mainfitnes/img/club3.png' %}" alt="Центр 3" class="center_image">
+                    <div class="center_label">Фитнес клуб на пр. Ленинского Комсомола 34</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="trainers">
+            <div class="trainers_header">
+                <h2 class="trainers_title">Наши тренера BodyClub</h2>
+                <div class="trainers_controls">
+                    <button class="trainers_btn">&#10094;</button>
+                    <button class="trainers_btn">&#10095;</button>
+                </div>
+            </div>
+
+            <div class="fortrainer">
+                <div class="trainer_card">
+                    <img src="{% static 'mainfitnes/img/trainer1.png' %}" alt="Тренер BodyClub" class="trainer_image">
+                    <div class="trainer_name">Аннастасия Громких</div>
+                    <div class="trainer_role">Персональный тренер</div>
+                    <div class="trainer_description">
+                        Дворцовая, 4А<br>
+                        Диплом ассоциации профессионалов фитнеса.<br>
+                        Сертифицированный инструктор: аэробика, функциональный, силовой тренинг, stretching, детский фитнес.<br>
+                        Помогу добиться желаемого результата, улучшить состояние организма, растянуть ваши мышцы.<br>
+                        <strong>Опыт работы: 5 лет</strong>
+                    </div>
+                </div>
+
+            <div class="trainer_card">
+                <img src="{% static 'mainfitnes/img/trainer2.png' %}" alt="Тренер BodyClub" class="trainer_image">
+                <div class="trainer_name">Андрей Кузнецов</div>
+                <div class="trainer_role">Персональный тренер</div>
+                <div class="trainer_description">
+                    Дворцовая, 4А<br>
+                    Диплом ассоциации профессионалов фитнеса.<br>
+                    Сертифицированный инструктор: силовой тренинг, функциональный тренинг, снижение веса, набор мышечной массы, коррекция фигуры.<br>
+                    Более 10 лет опыта силового тренинга, помогу набрать мышечную массу, улучшить состояние организма.<br>
+                    <strong>Опыт работы: 12 лет</strong>
+                </div>
+            </div>
+
+            <div class="trainer_card">
+                <img src="{% static 'mainfitnes/img/trainer3.png' %}" alt="Тренер BodyClub" class="trainer_image">
+                <div class="trainer_name">Екатерина Емельянова</div>
+                <div class="trainer_role">Мастер тренер</div>
+                <div class="trainer_description">
+                    Репина, 4<br>
+                    Диплом ассоциации профессионалов фитнеса.<br>
+                    Сертифицированный инструктор: набор силы, улучшение выносливости, набор мышечной массы, силовой тренинг.<br>
+                    Более 5 лет опыта силового тренинга, помогу набрать мышечную массу, добиться желаемого результата.<br>
+                    <strong>Опыт работы: 7 лет</strong>
+                </div>
+            </div>
+
+            <div class="trainer_card">
+                <img src="{% static 'mainfitnes/img/trainer5.png' %}" alt="Тренер BodyClub" class="trainer_image">
+                <div class="trainer_name">Кирилл Добрин</div>
+                <div class="trainer_role">Мастер тренер</div>
+                <div class="trainer_description">
+                    ул. Ленинского Комсомола, 34 <br>
+                    Диплом ассоциации профессионалов фитнеса.<br>
+                    Сертифицированный инструктор: набор силы, улучшение выносливости, набор мышечной массы, снижение веса.<br>
+                    Помощь в корректировке фигуры, набор мышечной массы, снижение веса, составление индивидуальных программ питания, функциональный тренинг.<br>
+                    <strong>Опыт работы: 15 лет</strong>
+                </div>
+            </div>
+
+            <div class="trainer_card">
+                <img src="{% static 'mainfitnes/img/trainer4.png' %}" alt="Тренер BodyClub" class="trainer_image">
+                <div class="trainer_name">Анастасия Шулепова</div>
+                <div class="trainer_role">Персональный тренер</div>
+                <div class="trainer_description">
+                    ул. Ленинского Комсомола, 34<br>
+                    Физкультурное педагогическое образование<br>
+                    Сертифицированный инструктор: набор силы, улучшение выносливости, лечебно-физическая культура, восстановление.<br>
+                    Помощь в воссстановлении после тяжелого этапа травм, развитие выносливости, лечебная гимнастика. Индивидуальный подход к каждого клиенту.<br>
+                    <strong>Опыт работы: 3 года </strong>
+                </div>
+            </div>
+        </section>
+    </div>
+        
+    <footer class="footer">
+        <div class="footer-main">
+            <div class = "foter-main_ogr">
+                <div class="footer-left">
+                    <h2 class="footer-logo">BodyClub</h2>
+                    <ul class="footer-links">
+                        <li> <a href="{% url 'index2' %}"> Абонементы </a> </li>
+                        <li> <a href="{% url 'index3' %}"> Персональные тренировки </a> </li>
+                        <li> <a href="{% url 'index4' %}"> Расписание </a> </li>
+                        <li> <a href="{% url 'index5' %}"> Контакты </a> </li>
+                    </ul>
+                    <button class="callback-btn">Обратный звонок</button>
+                </div>
+                <div class="footer-right">
+                    <a href="tel:+79999999999">☎ +7 (999) 999-99-99</a>
+                    <a href="https://bodyclub.ru" target="_blank">🌐 bodyclub.ru</a>
+
+                    <iframe
+                        src="https://yandex.ru/map-widget/v1/?um=constructor%3Aexamplemapid&amp;source=constructor"
+                        class="footer-map"
+                        frameborder="0"
+                        allowfullscreen
+                    ></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-bottom-logo">BodyClub</div>
+            <ul class="footer-bottom-links">
+                <li> <a href="{% url 'index2' %}" class="navigation_a"> Абонементы </a> </li>
+                <li> <a href="{% url 'index3' %}" class="navigation_a"> Персональные тренировки </a> </li>
+                <li> <a href="{% url 'index4' %}" class="navigation_a"> Расписание  </a> </li>
+                <li> <a href="{% url 'index5' %}" class="navigation_a"> Контакты </a> </li>
+            </ul>
+        </div>
+    </footer>
+</div>
+
+
+
+
+<div id="callback-modal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h3>Заказать обратный звонок</h3>
+        <form id="callback-form" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="callback-name">Ваше имя:</label>
+                <input type="text" id="callback-name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="callback-phone">Телефон:</label>
+                <input type="tel" id="callback-phone" name="phone" required>
+            </div>
+            <button type="submit" class="submit-btn">Перезвоните мне</button>
+        </form>
+        <div id="callback-success" style="display: none;">
+            <p>Спасибо! Мы свяжемся с вами в ближайшее время.</p>
+        </div>
+    </div>
+</div>
+
+
+<script>
+        const hamburger = document.getElementById('hamburger');
+        const navigation = document.querySelector('.navigation');
+        
+        hamburger.addEventListener('click', () => {
+            navigation.classList.toggle('show');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.promo_btn');
+        const container = document.getElementById('subscriptions-container');
+    
+        buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+        const branch = this.dataset.branch;
+                
+        buttons.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        
+        fetch(`/get_subscriptions/?branch=${branch}`)
+            .then(response => response.json())
+            .then(data => {
+                container.innerHTML = '';
+                if(data.length === 0) {
+                    container.innerHTML = '<p>Нет доступных абонементов для этого филиала</p>';
+                    return;
+                }
+                
+                data.forEach(sub => {
+                    const card = document.createElement('div');
+                    card.className = 'subscription-card';
+                    card.innerHTML = `
+                        <h4 class="subscription-title">${sub.title}</h4>
+                        <div class="subscription-price">${sub.price} ₽</div>
+                        <div class="subscription-duration">${sub.duration}</div>
+                        <p class="subscription-features">${sub.features}</p>
+                    `;
+                    container.appendChild(card);
+                });
+            });
+            });
+        });
+        
+
+        document.querySelector('.promo_btn').click();
+    });
+
+    const track = document.querySelector('.slider_track');
+    const dots = document.querySelectorAll('.dot');
+    const prevBtn = document.querySelector('.slider_btn.prev');
+    const nextBtn = document.querySelector('.slider_btn.next');
+
+    const cardsPerView = 3;
+    const totalCards = document.querySelectorAll('.slider_image').length;
+    const maxIndex = Math.ceil(totalCards / cardsPerView) - 1;
+    let index = 0;
+
+    function updateSlider() {
+        const offset = index * -(320 * cardsPerView); 
+        track.style.transform = `translateX(${offset}px)`;
+
+        dots.forEach(dot => dot.classList.remove('active'));
+        if (dots[index]) dots[index].classList.add('active');
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (index < maxIndex) {
+            index++;
+            updateSlider();
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (index > 0) {
+            index--;
+            updateSlider();
+        }
+    });
+
+    dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+            index = i;
+            updateSlider();
+        });
+    });
+
+
+
+document.querySelectorAll('.callback-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.getElementById('callback-modal').style.display = 'block';
+    });
+});
+
+
+document.getElementById('callback-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    fetch('/callback/', {
+        method: 'POST',
+        body: new FormData(this),
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('callback-form').style.display = 'none';
+            document.getElementById('callback-success').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('callback-modal').style.display = 'none';
+                document.getElementById('callback-form').style.display = 'block';
+                document.getElementById('callback-success').style.display = 'none';
+            }, 2000);
+        } else {
+            alert('Ошибка: ' + (data.errors || 'Проверьте правильность данных'));
+        }
+    });
+});
+
+
+
+
+document.querySelector('.request-btn').addEventListener('click', function() {
+
+    const subscriptionSelect = document.getElementById('request-subscription');
+    subscriptionSelect.innerHTML = '';
+    
+
+    const activeSubscriptions = document.querySelectorAll('.subscription-card');
+    if (activeSubscriptions.length > 0) {
+        activeSubscriptions.forEach(card => {
+            const title = card.querySelector('.subscription-title').textContent;
+            const price = card.querySelector('.subscription-price').textContent;
+            const option = document.createElement('option');
+            option.value = title;
+            option.textContent = `${title} (${price})`;
+            subscriptionSelect.appendChild(option);
+        });
+    } else {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'Выберите абонемент';
+        subscriptionSelect.appendChild(option);
+    }
+    
+
+    document.getElementById('request-modal').style.display = 'block';
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('subscriptions-container');
+    
+    container.addEventListener('click', function(e) {
+        const card = e.target.closest('.subscription-card');
+        if (card) {
+
+            document.querySelectorAll('.subscription-card').forEach(c => {
+                c.classList.remove('selected');
+            });
+            
+
+            card.classList.add('selected');
+        }
+    });
+});
+
+
+
+document.querySelector('.online-btn').addEventListener('click', function() {
+
+    const selectedCard = document.querySelector('.subscription-card');
+    
+    if (selectedCard) {
+        const title = selectedCard.querySelector('.subscription-title').textContent;
+        const price = selectedCard.querySelector('.subscription-price').textContent;
+        const id = Array.from(document.querySelectorAll('.subscription-card')).indexOf(selectedCard) + 1;
+        
+
+        const url = `{% url 'index6' %}?id=${id}&title=${encodeURIComponent(title)}&price=${encodeURIComponent(price)}`;
+        
+
+        window.location.href = url;
+    } else {
+        alert('Пожалуйста, выберите абонемент для оформления');
+    }
+});
+
+
+document.getElementById('request-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+
+    document.getElementById('request-form').style.display = 'none';
+    document.getElementById('request-success').style.display = 'block';
+    
+    setTimeout(() => {
+        document.getElementById('request-modal').style.display = 'none';
+        document.getElementById('request-form').style.display = 'block';
+        document.getElementById('request-success').style.display = 'none';
+    }, 2000);
+});
+
+
+document.querySelectorAll('.modal-close').forEach(closeBtn => {
+    closeBtn.addEventListener('click', function() {
+        this.closest('.modal').style.display = 'none';
+    });
+});
+
+
+document.querySelectorAll('.modal').forEach(modal => {
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.style.display = 'none';
+        }
+    });
+});
+
+document.getElementById('request-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch('/subscription-request/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('request-form').style.display = 'none';
+            document.getElementById('request-success').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('request-modal').style.display = 'none';
+                document.getElementById('request-form').style.display = 'block';
+                document.getElementById('request-success').style.display = 'none';
+                this.reset();  
+            }, 2000);
+        } else {
+            alert('Ошибка: ' + (data.error || 'Попробуйте еще раз'));
+        }
+    })
+    .catch(error => {
+        alert('Ошибка отправки формы: ' + error);
+    });
+});
+
+
+function redirectToLogin() {
+
+    sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
+
+    window.location.href = "{% url 'login' %}";
+}
+
+
+document.querySelector('.online-btn').addEventListener('click', function() {
+    {% if not user.is_authenticated %}
+        redirectToLogin();
+        return;
+    {% endif %}
+    
+
+    const selectedCard = document.querySelector('.subscription-card.selected') || 
+                         document.querySelector('.subscription-card');
+    
+    if (selectedCard) {
+        const title = selectedCard.querySelector('.subscription-title').textContent;
+        const price = selectedCard.querySelector('.subscription-price').textContent;
+        const id = Array.from(document.querySelectorAll('.subscription-card')).indexOf(selectedCard) + 1;
+        
+
+        const url = `{% url 'index6' %}?id=${id}&title=${encodeURIComponent(title)}&price=${encodeURIComponent(price)}`;
+        
+
+        window.location.href = url;
+    } else {
+        alert('Пожалуйста, выберите абонемент для оформления');
+    }
+});
+
+</script>
+</body>
+</html>
